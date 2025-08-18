@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zill</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Các kiểu CSS như cũ */body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.header {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header .search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.header .search-bar input {
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+}
+
+.header .search-bar button {
+  background-color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  position: fixed;
+}
+
+.sidebar .profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar .profile img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.sidebar .profile .info {
+  font-size: 14px;
+}
+
+.sidebar .profile .info .name {
+  font-weight: bold;
+}
+
+.sidebar .profile .info a {
+  color: #ff4d4d;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar .menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar .menu li {
+  margin-bottom: 10px;
+}
+
+/* Lớp active đã có nhưng thêm hover */
+.sidebar .menu li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.sidebar .menu li a:hover,
+.sidebar .menu li.active a {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+
+.content {
+  margin-left: 270px;
+  padding: 20px;
+}
+
+.content .title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content .add-product {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.content .product-list {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content .product-list .product {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10px 0;
+}
+
+.content .product-list .product:last-child {
+  border-bottom: none;
+}
+
+.content .product-list .product .details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content .product-list .product .details .info {
+  font-size: 14px;
+}
+
+.content .product-list .product .details .actions {
+  font-size: 14px;
+}
+
+.content .product-list .product .details .actions a {
+  color: #ff4d4d;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.content .product-list .product .details .info .id {
+  font-weight: bold;
+}
+
+.content .product-list .product .details .info .price {
+  color: green;
+}
+
+.content .product-list .product .details .info .final-price {
+  color: red;
+}
+
+#addProductModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 100%;
+  position: absolute; /* Thêm vị trí tuyệt đối */
+    top: 50%; /* Đặt phần tử vào giữa chiều dọc */
+    left: 50%; /* Đặt phần tử vào giữa chiều ngang */
+    transform: translate(-50%, -50%); 
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #ff3333;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo"><a href="index0.html">Zill</a></div>
+      <div class="search-bar">
+        <input placeholder="Nhanh tay ấm ngay giá tốt" type="text" />
+        <button>
+          <i class="fas fa-search"> </i>
+        </button>
+      </div>
+    </div>
+    <div class="sidebar">
+      <!-- Sidebar content here --><div class="profile">
+        <img
+        alt="Profile picture"
+        height="50"
+        src="https://storage.googleapis.com/a1aa/image/dOiHoRnjRIqMHhKr1hGr15WOCOw3ik2u0K8ILtKX9CGC3i8E.jpg"
+        width="50"
+      />
+      <div class="info">
+        <div class="name">ConChien</div>
+        <a href="#">Sửa hồ sơ</a>
+      </div>
+    </div>
+    <ul class="menu">
+      <li><a href="index1.html">Hồ Sơ</a></li>
+      <li><a href="#">Địa Chỉ</a></li>
+      <li><a href="#">Đổi Mật Khẩu</a></li>
+      <li><a href="index3.html">Tài sản</a></li>
+      <li><a class="active" href="index5.html">Phiên đấu giá</a></li>
+      <li><a href="index2.html">Quản lí Sản Phẩm</a></li>
+      <li><a href="index4.html">Danh Sách Đấu Giá</a></li>
+      <li><a href="index6.html">Lịch Sử Đơn Hàng</a></li>
+    </ul>
+  </div>
+    </div>
+    <div class="content">
+      <div class="title">
+        Quản lý sản phẩm
+        <button class="add-product" onclick="openAddProductModal()">+ Thêm sản phẩm mới</button>
+      </div>
+      <div class="product-list" id="productList">
+        <!-- Sản phẩm sẽ được hiển thị ở đây -->
+      </div>
+    </div>
+
+    <!-- Modal Thêm sản phẩm mới -->
+    <div id="addProductModal" style="display: none;">
+      <div class="modal-content">
+        <h3>Thêm sản phẩm mới</h3>
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" /><br />
+        <label for="productQuantity">Số lượng:</label>
+        <input type="number" id="productQuantity" /><br />
+        <label for="productPrice">Giá mua ngay:</label>
+        <input type="number" id="productPrice" /><br />
+        <label for="productDescription">Mô tả:</label>
+        <textarea id="productDescription"></textarea><br />
+        <button onclick="addProduct()">Lưu</button>
+        <button onclick="closeAddProductModal()">Đóng</button>
+      </div>
+    </div>
+
+    <script>
+      let products = [
+        {
+          id: "cnv1",
+          name: "Giày thể thao Puma",
+          quantity: 12,
+          price: 229000,
+          finalPrice: 359000,
+          description: "Mô tả sản phẩm Puma.",
+        },
+        {
+          id: "snk2",
+          name: "Sneaker Adidas + Vans",
+          quantity: 20,
+          price: 159000,
+          finalPrice: 299000,
+          description: "Mô tả sản phẩm Adidas và Vans.",
+        },
+        {
+          id: "snk1",
+          name: "Sneaker Adidas + Vans 2022",
+          quantity: 15,
+          price: 159000,
+          finalPrice: 339000,
+          description: "Mô tả sản phẩm Adidas và Vans năm 2022.",
+        },
+      ];
+
+      // Hiển thị danh sách sản phẩm
+      function renderProductList() {
+        const productList = document.getElementById("productList");
+        productList.innerHTML = "";
+        products.forEach((product) => {
+          productList.innerHTML += `
+            <div class="product" id="product-${product.id}">
+              <div class="details">
+                <div class="info">
+                  <div class="id">ID: ${product.id}</div>
+                  <div class="name">${product.name}</div>
+                  <div class="quantity">Số lượng: ${product.quantity}</div>
+                  <div class="price">Giá khởi điểm: ${product.price.toLocaleString()}</div>
+                  <div class="final-price">Giá tối đa: ${product.finalPrice.toLocaleString()}</div>
+                  <div class="description">Mô tả: ${product.description}</div>
+                </div>
+                <div class="actions">
+                  <a href="javascript:void(0)" onclick="openUpdateModal('${product.id}')">Cập nhật</a>
+                  <a href="javascript:void(0)" onclick="deleteProduct('${product.id}')">Xoá</a>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Mở modal Thêm sản phẩm
+      function openAddProductModal() {
+        document.getElementById("addProductModal").style.display = "block";
+      }
+
+      // Đóng modal Thêm sản phẩm
+      function closeAddProductModal() {
+        document.getElementById("addProductModal").style.display = "none";
+      }
+
+      // Thêm sản phẩm mới
+      function addProduct() {
+        const name = document.getElementById("productName").value;
+        const quantity = document.getElementById("productQuantity").value;
+        const price = document.getElementById("productPrice").value;
+        const finalPrice = document.getElementById("productFinalPrice").value;
+        const description = document.getElementById("productDescription").value;
+
+        const newProduct = {
+          id: "snk" + (products.length + 1),
+          name,
+          quantity: parseInt(quantity),
+          price: parseInt(price),
+          finalPrice: parseInt(finalPrice),
+          description,
+        };
+
+        products.push(newProduct);
+        renderProductList();
+        closeAddProductModal();
+      }
+
+      // Mở modal Cập nhật sản phẩm
+      function openUpdateModal(id) {
+        const product = products.find((p) => p.id === id);
+        if (product) {
+          document.getElementById("productName").value = product.name;
+          document.getElementById("productQuantity").value = product.quantity;
+          document.getElementById("productPrice").value = product.price;
+          document.getElementById("productFinalPrice").value = product.finalPrice;
+          document.getElementById("productDescription").value = product.description;
+          openAddProductModal();
+        }
+      }
+
+      // Xoá sản phẩm
+      function deleteProduct(id) {
+        products = products.filter((product) => product.id !== id);
+        renderProductList();
+      }
+
+      // Hiển thị danh sách sản phẩm khi trang tải
+      renderProductList();
+
+    </script>
+      <script>
+        // Chọn tất cả các mục trong menu sidebar
+        const menuItems = document.querySelectorAll('.sidebar .menu li a');
+      
+        // Lặp qua các mục và thêm sự kiện click
+        menuItems.forEach(item => {
+          item.addEventListener('click', function() {
+            // Xóa lớp 'active' khỏi tất cả các mục
+            menuItems.forEach(i => i.parentElement.classList.remove('active'));
+            // Thêm lớp 'active' cho mục được click
+            this.parentElement.classList.add('active');
+          });
+        });
+      </script>
+  </body>
+</html>

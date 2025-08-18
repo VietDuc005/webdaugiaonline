@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng Ký</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .register-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+    .register-container h2 {
+      margin-bottom: 20px;
+    }
+    .register-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .register-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .register-container a {
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Đăng Ký</h2>
+    <form id="registerForm">
+      <input type="text" id="fullName" placeholder="Tên đầy đủ" />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Mật khẩu" />
+      <button type="button" onclick="validateForm()">Đăng Ký</button>
+    </form>
+    <a href="index.html">Đã có tài khoản? Đăng nhập</a>
+  </div>
+
+  <script>
+    function validateForm() {
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // Kiểm tra các trường không được để trống
+      if (!fullName || !email || !password) {
+        alert("Vui lòng điền đầy đủ thông tin!");
+        return;
+      }
+
+      // Kiểm tra định dạng email phải chứa @gmail.com
+      if (!email.endsWith("@gmail.com")) {
+        alert("Email phải có định dạng @gmail.com!");
+        return;
+      }
+
+      // Nếu tất cả kiểm tra đều đúng, chuyển đến login.html
+      alert("Đăng ký thành công!");
+      document.getElementById("registerForm").submit();
+    }
+  </script>
+</body>
+</html>

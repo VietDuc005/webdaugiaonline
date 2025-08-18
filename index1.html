@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auctee - Hồ Sơ Của Tôi</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+      .header {
+        background-color: #ff4d4d;
+        padding: 10px 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .header .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .header .search-bar {
+        display: flex;
+        align-items: center;
+      }
+      .header .search-bar input {
+        padding: 5px;
+        font-size: 16px;
+        border: none;
+        border-radius: 3px;
+      }
+      .header .search-bar button {
+        background-color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      .container {
+        display: flex;
+        margin: 20px;
+      }
+      .sidebar {
+        width: 250px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .sidebar .profile {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .sidebar .profile img {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+      }
+      .sidebar .profile .name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .sidebar .profile .points {
+        color: green;
+        margin-top: 5px;
+      }
+      .sidebar .menu {
+        list-style: none;
+        padding: 0;
+      }
+      .sidebar .menu li {
+        margin: 10px 0;
+      }
+      .sidebar .menu li a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+      }
+      .sidebar .menu li a.active {
+        color: #ff4d4d;
+        font-weight: bold;
+      }
+      .content {
+        flex-grow: 1;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 20px;
+      }
+      .content h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      .content p {
+        color: red;
+        margin-bottom: 20px;
+      }
+      .content form {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .content form .form-group {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .content form .form-group label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .content form .form-group input,
+      .content form .form-group select {
+        width: calc(100% - 20px);
+        padding: 10px;
+border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .content form .form-group.gender {
+        display: flex;
+        align-items: center;
+      }
+      .content form .form-group.gender label {
+        margin-right: 10px;
+      }
+      .content form .form-group.gender input {
+        margin-right: 5px;
+      }
+      .content form .form-group .save-btn {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .content .profile-pic {
+        text-align: center;
+      }
+      .content .profile-pic img {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+      }
+      .content .profile-pic button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .content .profile-pic p {
+        margin-top: 10px;
+        color: #666;
+      }
+     
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo" ><a href="index0.html">Zill</a></div>
+      <div class="search-bar">
+        <input placeholder="Nhanh tay ẵm ngay giá tốt" type="text" />
+        <button><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="sidebar">
+        <div class="profile">
+          <img src="https://via.placeholder.com/80" alt="Profile Picture" />
+          <div class="name">ConChien</div>
+          <a href="#">Sửa Hồ Sơ</a>
+        </div>
+        <ul class="menu">
+          <li><a class="active" href="#">Hồ Sơ</a></li>
+          <li>
+            <a href="#" id="address-link">Địa Chỉ</a>
+          </li>
+
+          <div
+            id="address-form-section"
+            style="display: none; margin-top: 20px"
+          >
+            <h2>Nhập Địa Chỉ</h2>
+            <form id="address-form">
+              <label for="address-input">Địa chỉ của bạn:</label>
+              <input
+                type="text"
+                id="address-input"
+                placeholder="Nhập địa chỉ của bạn"
+                required
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  margin: 10px 0;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                "
+              />
+              <button
+                type="submit"
+                style="
+                  padding: 10px 20px;
+                  background-color: #ff4d4d;
+                  color: white;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                "
+              >
+                Lưu
+              </button>
+            </form>
+<div id="address-display" style="margin-top: 20px; display: none">
+              <h3>Địa chỉ đã nhập:</h3>
+              <p
+                id="displayed-address"
+                style="font-weight: bold; color: #333"
+              ></p>
+              <button
+                id="edit-address"
+                style="
+                  padding: 10px 20px;
+                  background-color: #007bff;
+                  color: white;
+                  border: none;
+                  border-radius: 5px;
+                  cursor: pointer;
+                "
+              >
+                Sửa Địa Chỉ
+              </button>
+            </div>
+          </div>
+          <style>
+            #address-form-section {
+              background-color: white;
+              padding: 20px;
+              border-radius: 5px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              max-width: 400px;
+            }
+            a {
+            text-decoration: none;
+        }
+        a:hover {
+            color: red; 
+        }
+          </style>
+          <script>
+            const addressLink = document.getElementById("address-link");
+            const addressFormSection = document.getElementById(
+              "address-form-section"
+            );
+            const addressForm = document.getElementById("address-form");
+            const addressInput = document.getElementById("address-input");
+            const addressDisplay = document.getElementById("address-display");
+            const displayedAddress =
+              document.getElementById("displayed-address");
+            const editAddressButton = document.getElementById("edit-address");
+
+            // Khi nhấn vào "Địa Chỉ"
+            addressLink.addEventListener("click", (e) => {
+              e.preventDefault();
+              addressFormSection.style.display = "block"; // Hiển thị giao diện nhập địa chỉ
+              addressForm.style.display = "block";
+              addressDisplay.style.display = "none";
+            });
+
+            // Lưu địa chỉ
+            addressForm.addEventListener("submit", (e) => {
+              e.preventDefault();
+              const address = addressInput.value.trim();
+              if (address) {
+                displayedAddress.textContent = address; // Hiển thị địa chỉ
+                addressForm.style.display = "none";
+                addressDisplay.style.display = "block";
+              } else {
+                alert("Vui lòng nhập địa chỉ!");
+              }
+            });
+
+            // Sửa địa chỉ
+            editAddressButton.addEventListener("click", () => {
+              addressForm.style.display = "block";
+              addressDisplay.style.display = "none";
+            });
+          </script>
+
+          <li><a href="#">Đổi Mật Khẩu</a></li>
+          <li><a href="index3.html">Tài sản</a></li>
+          <li><a href=index5.html>Phiên đấu giá</a></li>
+          <li><a href="index2.html">Quản lí Sản Phẩm</a></li>
+          <li><a href="index4.html">Danh Sách Đấu Giá</a></li>
+          <li><a href="index6.html">Lịch Sử Đơn Hàng</a></li>
+</ul>
+      </div>
+      <div class="content">
+        <h2>Hồ Sơ Của Tôi</h2>
+        <p>Mẹo: Duy trì điểm uy tín trên 80 để được tham gia đấu giá</p>
+        <form>
+          <div class="form-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" value="hhi" required />
+          </div>
+          <div class="form-group">
+            <label>Tên</label>
+            <input type="text" value="Conchien" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="text" value="ducmmok4@gmail.com" required />
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại</label>
+            <input type="text" value="0999999999" required />
+          </div>
+          <div class="form-group">
+            <label>Tên Shop</label>
+            <input type="text" value="Doan ne" />
+          </div>
+          <div class="form-group gender">
+            <label>Giới tính</label>
+            <input type="radio" name="gender" value="male" checked /> Nam
+            <input type="radio" name="gender" value="female" /> Nữ
+          </div>
+          <div class="form-group">
+            <label>Ngày sinh</label>
+            <div style="display: flex; gap: 10px">
+              <select name="day" id="day">
+                <!-- Tạo danh sách ngày từ 1 đến 31 -->
+                <script>
+                  for (let i = 1; i <= 31; i++) {
+                    document.write(`<option value="${i}">${i}</option>`);
+                  }
+                </script>
+              </select>
+              <select name="month" id="month">
+                <!-- Tạo danh sách tháng từ 1 đến 12 -->
+                <script>
+                  for (let i = 1; i <= 12; i++) {
+                    document.write(`<option value="${i}">Tháng ${i}</option>`);
+                  }
+                </script>
+              </select>
+              <select name="year" id="year">
+                <!-- Tạo danh sách năm từ 1900 đến năm hiện tại -->
+                <script>
+                  const currentYear = new Date().getFullYear();
+                  for (let i = currentYear; i >= 1900; i--) {
+                    document.write(`<option value="${i}">${i}</option>`);
+                  }
+                </script>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="save-btn" type="submit">Lưu</button>
+          </div>
+        </form>
+        <div class="profile-pic">
+          <!-- Hình đại diện -->
+          <img
+            id="preview-image"
+            src="https://via.placeholder.com/100"
+            alt="Avatar"
+            width="100"
+            height="100"
+          />
+
+          <!-- Input để chọn ảnh -->
+          <input
+            type="file"
+            id="file-input"
+            accept="image/*"
+style="display: none"
+          />
+          <button id="choose-image-btn">Chọn Ảnh</button>
+
+          <p>Dung lượng file tối đa 1MB; Định dạng: JPEG, PNG</p>
+        </div>
+
+        <script>
+          const fileInput = document.getElementById("file-input");
+          const previewImage = document.getElementById("preview-image");
+          const chooseImageBtn = document.getElementById("choose-image-btn");
+
+          // Khi nhấn nút "Chọn Ảnh"
+          chooseImageBtn.addEventListener("click", () => {
+            fileInput.click(); // Kích hoạt chọn file
+          });
+
+          // Khi người dùng chọn file
+          fileInput.addEventListener("change", (event) => {
+            const file = event.target.files[0]; // Lấy file đầu tiên
+            if (file) {
+              // Kiểm tra kích thước file (dưới 1MB)
+              if (file.size > 1024 * 1024) {
+                alert("Dung lượng file vượt quá 1MB!");
+                return;
+              }
+
+              // Hiển thị ảnh được chọn
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                previewImage.src = e.target.result; // Gán ảnh vào thẻ <img>
+              };
+              reader.readAsDataURL(file); // Đọc file dưới dạng URL
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zill</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Các kiểu CSS như cũ */body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.header {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header .search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.header .search-bar input {
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+}
+
+.header .search-bar button {
+  background-color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  position: fixed;
+}
+
+.sidebar .profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar .profile img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.sidebar .profile .info {
+  font-size: 14px;
+}
+
+.sidebar .profile .info .name {
+  font-weight: bold;
+}
+
+.sidebar .profile .info a {
+  color: #ff4d4d;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar .menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar .menu li {
+  margin-bottom: 10px;
+}
+
+/* Lớp active đã có nhưng thêm hover */
+.sidebar .menu li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.sidebar .menu li a:hover,
+.sidebar .menu li.active a {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+
+.content {
+  margin-left: 270px;
+  padding: 20px;
+}
+
+.content .title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.content .add-product {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.content .product-list {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content .product-list .product {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 10px 0;
+}
+
+.content .product-list .product:last-child {
+  border-bottom: none;
+}
+
+.content .product-list .product .details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content .product-list .product .details .info {
+  font-size: 14px;
+}
+
+.content .product-list .product .details .actions {
+  font-size: 14px;
+}
+
+.content .product-list .product .details .actions a {
+  color: #ff4d4d;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.content .product-list .product .details .info .id {
+  font-weight: bold;
+}
+
+.content .product-list .product .details .info .price {
+  color: green;
+}
+
+.content .product-list .product .details .info .final-price {
+  color: red;
+}
+
+#addProductModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.modal-content button:hover {
+  background-color: #ff3333;
+}
+.modal {
+  display: none; /* Ẩn modal mặc định */
+  position: fixed;
+  z-index: 1000; /* Đảm bảo modal nằm trên các phần tử khác */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  padding-top: 60px;
+}
+
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo"><a href="index0.html">Zill</a></div>
+      <div class="search-bar">
+        <input placeholder="Nhanh tay ấm ngay giá tốt" type="text" />
+        <button>
+          <i class="fas fa-search"> </i>
+        </button>
+      </div>
+    </div>
+    <div class="sidebar">
+      <!-- Sidebar content here --><div class="profile">
+        <img
+        alt="Profile picture"
+        height="50"
+        src="https://storage.googleapis.com/a1aa/image/dOiHoRnjRIqMHhKr1hGr15WOCOw3ik2u0K8ILtKX9CGC3i8E.jpg"
+        width="50"
+      />
+      <div class="info">
+        <div class="name">ConChien</div>
+        <a href="#">Sửa hồ sơ</a>
+      </div>
+    </div>
+    <ul class="menu">
+      <li><a href="index1.html">Hồ Sơ</a></li>
+      <li><a href="#">Địa Chỉ</a></li>
+      <li><a href="#">Đổi Mật Khẩu</a></li>
+      <li><a href="index3.html">Tài sản</a></li>
+      <li><a class="active" href="index5.html">Phiên đấu giá</a></li>
+      <li><a href="index2.html">Quản lí Sản Phẩm</a></li>
+      <li><a href="index4.html">Danh Sách Đấu Giá</a></li>
+      <li><a href="index6.html">Lịch Sử Đơn Hàng</a></li>
+    </ul>
+  </div>
+    </div>
+    <div class="content">
+      <div class="title">
+        Quản lý phiên đấu giá
+        <button class="add-product" onclick="openAddProductModal()">+ Thêm phiên đấu giá mới</button>
+      </div>
+      <div class="product-list" id="productList">
+        <!-- Sản phẩm sẽ được hiển thị ở đây -->
+      </div>
+    </div>
+
+    <!-- Modal Thêm sản phẩm mới -->
+   <!-- Modal Thêm Phiên Đấu Giá -->
+   <div id="addProductModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeAddProductModal()">&times;</span>
+      <h2 id="modalTitle">Thêm Sản phẩm</h2>
+
+      <form id="productForm">
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" required><br><br>
+
+        <label for="productStartingPrice">Giá khởi điểm:</label>
+        <input type="number" id="productStartingPrice" required><br><br>
+
+        <label for="productCurrentPrice">Giá hiện tại:</label>
+        <input type="number" id="productCurrentPrice" required><br><br>
+
+        <label for="productStartTime">Thời gian bắt đầu:</label>
+        <input type="text" id="productStartTime" required><br><br>
+
+        <label for="productEndTime">Thời gian kết thúc:</label>
+        <input type="text" id="productEndTime" required><br><br>
+
+        <label for="productDescription">Mô tả:</label>
+        <textarea id="productDescription" required></textarea><br><br>
+
+        <label for="productImage">URL ảnh:</label>
+        <input type="url" id="productImage" required><br><br>
+
+        <button type="button" id="saveButton" onclick="addProduct()">Thêm sản phẩm</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+let products = [
+  {
+    id: "snk-1",
+    name: "Sneaker Adidas",
+    startingPrice: 1000000,
+    currentPrice: 1200000,
+    startTime: "4:02:40 PM 26/12/2022",
+    endTime: "Kết thúc trong: 10 ngày 23:59:03",
+    description: "Sneaker Adidas, phong cách trẻ trung",
+    image: "https://via.placeholder.com/80",
+  },
+  {
+    id: "snk-2",
+    name: "Sneaker Adidas + Vans",
+    startingPrice: 1150000,
+    currentPrice: 1150000,
+    startTime: "4:02:40 PM 26/12/2022",
+    endTime: "Kết thúc trong: 10 ngày 23:59:03",
+    description: "Sneaker phối hợp giữa Adidas và Vans",
+    image: "https://via.placeholder.com/80",
+  },
+  {
+    id: "snk-5",
+    name: "Giày thể thao Puma 2023",
+    startingPrice: 229000,
+    currentPrice: 2500000,
+    startTime: "8:30:00 AM 01/12/2024",
+    endTime: "Kết thúc trong: 14 ngày 12:34:15",
+    description: "Giày thể thao Puma mới nhất 2023",
+    image: "https://via.placeholder.com/80",
+  },
+];
+
+// Render Product List
+function renderProductList() {
+  const productList = document.getElementById("productList");
+  productList.innerHTML = "";
+  products.forEach((product) => {
+    productList.innerHTML += `
+      <div class="product" id="product-${product.id}">
+        <div class="details">
+          <div class="info">
+            <div class="id">ID: ${product.id}</div>
+            <div class="name">${product.name}</div>
+            <div class="price">Giá khởi điểm: ${product.startingPrice.toLocaleString()}</div>
+            <div class="current-price">Giá hiện tại: ${product.currentPrice.toLocaleString()}</div>
+            <div class="end-time">${product.endTime}</div>
+            <div class="description">Mô tả: ${product.description}</div>
+          </div>
+          <div class="actions">
+            <a href="javascript:void(0)" onclick="openUpdateModal('${product.id}')">Cập nhật</a>
+            <a href="javascript:void(0)" onclick="deleteProduct('${product.id}')">Xoá</a>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// Open Add Product Modal
+function openAddProductModal() {
+  document.getElementById("addProductModal").style.display = "block";
+  resetForm();
+  document.getElementById("modalTitle").textContent = "Thêm Sản phẩm";
+  document.getElementById("saveButton").onclick = function() {
+    addProduct();
+  };
+}
+
+// Open Update Product Modal with data
+function openUpdateModal(id) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+
+  document.getElementById("productName").value = product.name;
+  document.getElementById("productStartingPrice").value = product.startingPrice;
+  document.getElementById("productCurrentPrice").value = product.currentPrice;
+  document.getElementById("productStartTime").value = product.startTime;
+  document.getElementById("productEndTime").value = product.endTime;
+  document.getElementById("productDescription").value = product.description;
+  document.getElementById("productImage").value = product.image;
+  
+  document.getElementById("modalTitle").textContent = "Cập nhật Sản phẩm";
+
+  // Change save button to update action
+  document.getElementById("saveButton").onclick = function() {
+    updateProduct(id);
+  };
+
+  // Show the modal
+  document.getElementById("addProductModal").style.display = "block";
+}
+
+
+// Close Add Product Modal
+function closeAddProductModal() {
+  document.getElementById("addProductModal").style.display = "none";
+}
+
+// Reset Form
+function resetForm() {
+  document.getElementById("productForm").reset();
+}
+
+// Add Product
+function addProduct() {
+  const name = document.getElementById("productName").value;
+  const startingPrice = document.getElementById("productStartingPrice").value;
+  const currentPrice = document.getElementById("productCurrentPrice").value;
+  const startTime = document.getElementById("productStartTime").value;
+  const endTime = document.getElementById("productEndTime").value;
+  const description = document.getElementById("productDescription").value;
+  const image = document.getElementById("productImage").value;
+
+  const newProduct = {
+    id: "snk-" + (products.length + 1),
+    name,
+    startingPrice: parseInt(startingPrice),
+    currentPrice: parseInt(currentPrice),
+    startTime,
+    endTime,
+    description,
+    image,
+  };
+  
+  products.push(newProduct);
+  closeAddProductModal();
+  renderProductList();
+}
+
+// Update Product
+function updateProduct(id) {
+  const name = document.getElementById("productName").value;
+  const startingPrice = document.getElementById("productStartingPrice").value;
+  const currentPrice = document.getElementById("productCurrentPrice").value;
+  const startTime = document.getElementById("productStartTime").value;
+  const endTime = document.getElementById("productEndTime").value;
+  const description = document.getElementById("productDescription").value;
+  const image = document.getElementById("productImage").value;
+
+  const productIndex = products.findIndex(p => p.id === id);
+  if (productIndex !== -1) {
+    products[productIndex] = {
+      ...products[productIndex],
+      name,
+      startingPrice: parseInt(startingPrice),
+      currentPrice: parseInt(currentPrice),
+      startTime,
+      endTime,
+      description,
+      image,
+    };
+  }
+
+  closeAddProductModal();
+  renderProductList();
+}
+
+// Delete Product
+function deleteProduct(id) {
+  products = products.filter(p => p.id !== id);
+  renderProductList();
+}
+
+// Initial Render
+renderProductList(); 
+
+  </script>
+  
+  </body>
+</html>

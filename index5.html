@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý sàn đấu giá</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS style như ban đầu */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      .header {
+        background-color: #e74c3c;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+      }
+      .header .logo {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .header .search-bar {
+        margin-left: 20px;
+        flex-grow: 1;
+      }
+      .header .search-bar input {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+      }
+      .header .search-bar button {
+        background-color: white;
+        border: none;
+        padding: 8px;
+        border-radius: 4px;
+        margin-left: -40px;
+        cursor: pointer;
+      }
+      .sidebar {
+        width: 250px;
+        background-color: white;
+        padding: 20px;
+        position: fixed;
+        top: 60px;
+        bottom: 0;
+        border-right: 1px solid #ddd;
+      }
+      .sidebar .profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .sidebar .profile img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+      .sidebar .profile .info {
+        font-size: 14px;
+      }
+      .sidebar .profile .info .name {
+        font-weight: bold;
+      }
+      .sidebar .menu {
+        list-style: none;
+        padding: 0;
+      }
+      .sidebar .menu li {
+        margin-bottom: 10px;
+      }
+      .sidebar .menu li a {
+        text-decoration: none;
+        color: #333;
+      }
+      .sidebar .menu li a.active {
+        color: #ff4d4d;
+      }
+      .content {
+        margin-left: 270px;
+        padding: 20px;
+      }
+      .content .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .content .header h2 {
+        margin: 0;
+      }
+      .content .header button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .content .auction-list {
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .content .auction-list .auction-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+border-bottom: 1px solid #ddd;
+      }
+      .content .auction-list .auction-item:last-child {
+        border-bottom: none;
+      }
+      .content .auction-list .auction-item .info {
+        flex-grow: 1;
+      }
+      .content .auction-list .auction-item .info .title {
+        font-weight: bold;
+      }
+      .content .auction-list .auction-item .info .details {
+        font-size: 12px;
+        color: #666;
+      }
+      .content .auction-list .auction-item .actions {
+        display: flex;
+        align-items: center;
+      }
+      .content .auction-list .auction-item .actions a {
+        margin-left: 10px;
+        color: #e74c3c;
+        text-decoration: none;
+      }
+      .content .auction-list .auction-item .actions a:hover {
+        text-decoration: underline;
+      }
+      /* Modal */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 300px;
+      }
+      .modal-content input {
+        width: 90%;
+        padding: 8px;
+        margin: 8px 0;
+      }
+      .modal-content button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+      } /* Đảm bảo modal được căn giữa màn hình */
+      #addProductModal {
+        display: none; /* Ẩn mặc định */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); /* Mờ nền */
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 400px;
+        max-width: 90%;
+        margin: auto;
+        position: relative;
+        top: 20%;
+      }
+      #addProductModal {
+        display: none; /* Mặc định ẩn */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+        max-width: 90%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo"><a href="index0.html">Zill</a></div>
+      <div class="search-bar">
+        <input placeholder="Nhanh tay ấm ngay giá tốt" type="text" />
+<button><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="profile">
+        <img
+          alt="Profile picture"
+          height="50"
+          src="https://storage.googleapis.com/a1aa/image/dOiHoRnjRIqMHhKr1hGr15WOCOw3ik2u0K8ILtKX9CGC3i8E.jpg"
+          width="50"
+        />
+        <div class="info">
+          <div class="name">ConChien</div>
+          <a href="#">Sửa hồ sơ</a>
+        </div>
+      </div>
+      <ul class="menu">
+        <li><a href="index1.html">Hồ Sơ</a></li>
+        <li><a href="#">Địa Chỉ</a></li>
+        <li><a href="#">Đổi Mật Khẩu</a></li>
+        <li><a href="index3.html">Tài sản</a></li>
+        <li><a class="active" href="index5.html">Phiên đấu giá</a></li>
+        <li><a href="index2.html">Quản lí Sản Phẩm</a></li>
+        <li><a href="index4.html">Danh Sách Đấu Giá</a></li>
+        <li><a href="index6.html">Lịch Sử Đơn Hàng</a></li>
+      </ul>
+    </div>
+    <div class="content">
+      <div class="header">
+        <h2>Quản lý sàn đấu giá</h2>
+        <button onclick="openAddAuctionModal()">+ Đăng kí đấu giá</button>
+      </div>
+      <div class="auction-list" id="auctionList"></div>
+    </div>
+    <!-- Modal Cập nhật phiên đấu giá -->
+    <div class="modal" id="updateAuctionModal">
+      <div class="modal-content">
+        <h3>Cập nhật phiên đấu giá</h3>
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" />
+        <label for="productPrice">Giá khởi điểm:</label>
+        <input type="number" id="productPrice" />
+
+        <label for="productFinalPrice">Giá tối đa:</label>
+        <input type="number" id="productFinalPrice" />
+        <label for="productStartTime">Thời gian bắt đầu:</label>
+        <input type="datetime-local" id="productStartTime" />
+        <label for="productEndTime">Thời gian kết thúc:</label>
+        <input type="datetime-local" id="productEndTime" />
+        <label for="productDescription">Mô tả:</label>
+        <textarea id="productDescription"></textarea>
+        <button onclick="saveUpdatedAuction()">Lưu</button>
+        <button onclick="closeUpdateModal()">Đóng</button>
+      </div>
+    </div>
+    <!-- Modal đăng kí đấu giá -->
+    <div id="addProductModal" style="display: none">
+      <div class="modal-content">
+        <h3>Đăng kí đấu giá</h3>
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" /><br />
+        <label for="productPrice">Giá khởi điểm:</label>
+        <input type="number" id="productPrice" /><br />
+        <label for="productFinalPrice">Giá tối đa:</label>
+        <input type="number" id="productFinalPrice" /><br />
+        <label for="productStartTime">Thời gian bắt đầu:</label>
+        <input type="datetime-local" id="productStartTime" /><br />
+<label for="productEndTime">Thời gian kết thúc:</label>
+        <input type="datetime-local" id="productEndTime" /><br />
+        <label for="productDescription">Mô tả:</label
+        ><textarea id="productDescription"></textarea><br />
+        <button onclick="addProduct()">Lưu</button>
+        <button onclick="closeAddProductModal()">Đóng</button>
+      </div>
+    </div>
+    <!-- Nơi hiển thị danh sách sản phẩm -->
+    <div id="productList"></div>
+
+    <script>
+      let auctions = [
+        {
+          id: "snk-2",
+          name: "Sneaker Adidas + Vans",
+          stepPrice: 12000,
+          currentPrice: 159000,
+          status: "Đang diễn ra",
+          startTime: "2024-05-01T10:00",
+          endTime: "2024-05-05T18:00",
+          description: "Giày thể thao chất lượng cao.",
+          hidden: false,
+        },
+
+        {
+          id: "cnv-1",
+          name: "Giày thể thao Puma",
+          stepPrice: 2000,
+          currentPrice: 24000,
+          status: "Đang diễn ra",
+          startTime: "2024-05-02T14:00",
+          endTime: "2024-05-06T20:00",
+          description: "Mẫu giày mới nhất từ Puma.",
+          hidden: false,
+        },
+      ];
+
+      // Hiển thị danh sách đấu giá
+      function renderAuctionList() {
+        const auctionList = document.getElementById("auctionList");
+        auctionList.innerHTML = ""; // Xóa giao diện cũ
+
+        auctions.forEach((auction) => {
+          if (!auction.hidden) {
+            auctionList.innerHTML += `
+        <div class="auction-item" data-id="${auction.id}">
+          <div class="info">
+            <div class="title">ID sản phẩm: ${auction.id}</div>
+            <div class="details">
+              Trạng thái: <span style="color: green">${
+                auction.status
+              }</span><br />
+              Bước giá: ₫${auction.stepPrice.toLocaleString()}<br />
+              Giá hiện tại: ₫${auction.currentPrice.toLocaleString()}<br />
+              Thời gian: ${auction.startTime} - ${auction.endTime}
+            </div>
+          </div>
+          <div class="actions">
+            <a href="#" onclick="openUpdateModal('${auction.id}')">Cập nhật</a>
+            <a href="#" onclick="openDeleteModal('${auction.id}')">Xóa</a>
+          </div>
+        </div>`;
+          }
+        });
+      }
+
+      // Mở modal cập nhật
+      function openUpdateModal(id) {
+        currentUpdateId = id; // Lưu ID phiên đấu giá cần cập nhật
+        const auction = auctions.find((a) => a.id === id);
+
+        // Điền dữ liệu vào form modal
+        document.getElementById("productName").value = auction.name;
+        document.getElementById("productPrice").value = auction.stepPrice;
+        document.getElementById("productFinalPrice").value =
+          auction.currentPrice;
+        document.getElementById("productStartTime").value = auction.startTime;
+document.getElementById("productEndTime").value = auction.endTime;
+        document.getElementById("productDescription").value =
+          auction.description;
+
+        // Hiển thị modal
+        document.getElementById("updateAuctionModal").style.display = "flex";
+      }
+
+      // Hàm lưu thông tin đã cập nhật
+      function saveUpdatedAuction() {
+        const updatedName = document.getElementById("productName").value;
+        const updatedStepPrice = parseInt(
+          document.getElementById("productPrice").value
+        );
+        const updatedCurrentPrice = parseInt(
+          document.getElementById("productFinalPrice").value
+        );
+        const updatedStartTime =
+          document.getElementById("productStartTime").value;
+        const updatedEndTime = document.getElementById("productEndTime").value;
+        const updatedDescription =
+          document.getElementById("productDescription").value;
+
+        // Tìm và cập nhật dữ liệu phiên đấu giá
+        const auction = auctions.find((a) => a.id === currentUpdateId);
+        if (auction) {
+          auction.name = updatedName;
+          auction.stepPrice = updatedStepPrice;
+          auction.currentPrice = updatedCurrentPrice;
+          auction.startTime = updatedStartTime;
+          auction.endTime = updatedEndTime;
+          auction.description = updatedDescription;
+        }
+
+        closeUpdateModal(); // Đóng modal sau khi lưu
+        renderAuctionList(); // Cập nhật lại danh sách đấu giá trên giao diện
+      }
+
+      // Hàm đóng modal
+      function closeUpdateModal() {
+        document.getElementById("updateAuctionModal").style.display = "none";
+      }
+
+      // Gọi hàm renderAuctionList khi trang tải xong
+      window.onload = function () {
+        renderAuctionList();
+      };
+    </script>
+    <script>
+      // Danh sách lưu trữ sản phẩm
+      let products = [];
+
+      // Hàm mở modal
+      function openAddAuctionModal() {
+        document.getElementById("addProductModal").style.display = "flex";
+      }
+
+      // Hàm đóng modal
+      function closeAddProductModal() {
+        document.getElementById("addProductModal").style.display = "none";
+      }
+
+      // Hàm thêm sản phẩm
+      function addProduct() {
+        const productName = document.getElementById("productName").value;
+        const productPrice =
+          parseInt(document.getElementById("productPrice").value) || 0;
+        const productFinalPrice =
+          parseInt(document.getElementById("productFinalPrice").value) || 0;
+        const productStartTime =
+          document.getElementById("productStartTime").value;
+        const productEndTime = document.getElementById("productEndTime").value;
+        const productDescription =
+          document.getElementById("productDescription").value;
+
+        // Tạo đối tượng đấu giá mới
+        const newAuction = {
+id: `auc-${Date.now()}`, // Tạo ID duy nhất
+          name: productName || "Chưa đặt tên",
+          stepPrice: productPrice,
+          currentPrice: productFinalPrice,
+          status: "Sắp diễn ra",
+          startTime: productStartTime,
+          endTime: productEndTime,
+          description: productDescription,
+          hidden: false,
+        };
+
+        // Thêm vào danh sách đấu giá
+        auctions.push(newAuction);
+
+        // Hiển thị lại danh sách đấu giá
+        renderAuctionList();
+
+        // Đóng modal
+        closeAddProductModal();
+      }
+
+      // Hàm hiển thị danh sách sản phẩm trên giao diện
+      function renderProductList() {
+        const productList = document.getElementById("auctionList");
+
+        // Kiểm tra nếu không có sản phẩm
+        if (products.length === 0) {
+          productList.innerHTML = "<p>Chưa có sản phẩm nào.</p>";
+        }
+
+        // Hiển thị danh sách sản phẩm
+        products.forEach((product) => {
+          productList.innerHTML += `
+      <div class="product-item">
+        <h4>${product.productName || "Chưa có tên sản phẩm"}</h4>
+        <p>Giá khởi điểm: ₫${parseInt(
+          product.productPrice || 0
+        ).toLocaleString()}</p>
+        <p>Giá tối đa: ₫${parseInt(
+          product.productFinalPrice || 0
+        ).toLocaleString()}</p>
+        <p>Thời gian bắt đầu: ${
+          product.productStartTime
+            ? new Date(product.productStartTime).toLocaleString()
+            : "Chưa có thời gian bắt đầu"
+        }</p>
+        <p>Thời gian kết thúc: ${
+          product.productEndTime
+            ? new Date(product.productEndTime).toLocaleString()
+            : "Chưa có thời gian kết thúc"
+        }</p>
+        <p>Mô tả: ${product.productDescription || "Chưa có mô tả"}</p>
+        <hr />
+      </div>
+    `;
+        });
+      }
+      // Hàm mở modal xác nhận xóa (có thể bổ sung modal nếu muốn)
+function openDeleteModal(id) {
+  // Xác nhận trước khi xóa
+  if (confirm("Bạn có chắc chắn muốn xóa phiên đấu giá này không?")) {
+    deleteAuction(id);
+  }
+}
+
+// Hàm xử lý "xóa" phiên đấu giá
+function deleteAuction(id) {
+  const auction = auctions.find((a) => a.id === id);
+  if (auction) {
+    auction.hidden = true; // Ẩn phiên đấu giá khỏi danh sách
+    renderAuctionList(); // Cập nhật giao diện
+  }
+}
+
+    </script>
+  </body>
+</html>

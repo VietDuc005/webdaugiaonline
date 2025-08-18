@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài sản</title>
+    <style>
+       /* Các kiểu CSS như cũ */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.header {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.header .search-bar input {
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+}
+
+.header .search-bar button {
+    background-color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    position: fixed;
+}
+
+.sidebar .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .profile img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.sidebar .profile .info {
+    font-size: 14px;
+}
+
+.sidebar .profile .info .name {
+    font-weight: bold;
+}
+
+.sidebar .profile .info a {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar .menu li {
+    margin-bottom: 10px;
+}
+
+/* Lớp active đã có nhưng thêm hover */
+.sidebar .menu li a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.sidebar .menu li a:hover,
+.sidebar .menu li.active a {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+.content {
+    margin-left: 270px;
+    padding: 20px;
+}
+
+.content .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .add-product {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.content .product-list {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.content .product-list .product {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 0;
+}
+
+.content .product-list .product:last-child {
+    border-bottom: none;
+}
+
+.content .product-list .product .details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .product-list .product .details .info {
+    font-size: 14px;
+}
+
+.content .product-list .product .details .actions {
+    font-size: 14px;
+}
+
+.content .product-list .product .details .actions a {
+    color: #ff4d4d;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.content .product-list .product .details .info .id {
+    font-weight: bold;
+}
+
+.content .product-list .product .details .info .price {
+    color: green;
+}
+
+.content .product-list .product .details .info .final-price {
+    color: red;
+}
+
+#addProductModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.modal-content button:hover {
+    background-color: #ff3333;
+}
+
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed;
+    z-index: 1000; /* Đảm bảo modal nằm trên các phần tử khác */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.content .balance-section {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.content .balance-info {
+    margin-bottom: 20px;
+}
+
+.content .balance-info h3 {
+    font-size: 18px;
+    color: #333;
+}
+
+.content .balance {
+    font-size: 24px;
+    font-weight: bold;
+    color: green;
+}
+
+.content .payment-methods, .content .payment-history {
+    margin-top: 20px;
+}
+
+.content .payment-methods h3, .content .payment-history h3 {
+    font-size: 18px;
+    color: #333;
+}
+
+.content .payment-methods ul, .content .payment-history ul {
+    list-style: none;
+    padding: 0;
+}
+
+.content .payment-methods li, .content .payment-history li {
+    margin-bottom: 10px;
+}
+
+.content .payment-methods a, .content .payment-history a {
+    text-decoration: none;
+    color: #ff4d4d;
+    font-size: 16px;
+}
+
+.content .payment-methods a:hover, .content .payment-history a:hover {
+    font-weight: bold;
+    color: #cc0000;
+}
+
+
+      </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><a href="index0.html">Zill</a></div>
+        <div class="search-bar">
+            <input placeholder="Nhanh tay ấm ngay giá tốt" type="text" />
+            <button>
+                <i class="fas fa-search"> </i>
+            </button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="profile">
+            <img
+                alt="Profile picture"
+                height="50"
+                src="https://storage.googleapis.com/a1aa/image/dOiHoRnjRIqMHhKr1hGr15WOCOw3ik2u0K8ILtKX9CGC3i8E.jpg"
+                width="50"
+            />
+            <div class="info">
+                <div class="name">ConChien</div>
+                <a href="#">Sửa hồ sơ</a>
+            </div>
+        </div>
+        <ul class="menu">
+            <li><a href="index1.html">Hồ Sơ</a></li>
+            <li><a href="#">Địa Chỉ</a></li>
+            <li><a href="#">Đổi Mật Khẩu</a></li>
+            <li><a href="index3.html">Tài sản</a></li>
+            <li><a class="active" href="index5.html">Phiên đấu giá</a></li>
+            <li><a href="index2.html">Quản lí Sản Phẩm</a></li>
+            <li><a href="index4.html">Danh Sách Đấu Giá</a></li>
+            <li><a href="index6.html">Lịch Sử Đơn Hàng</a></li>
+        </ul>
+    </div>
+   <div class="content">
+    <div class="balance-section">
+        <div class="balance-info">
+            <h3>Số dư tài khoản:</h3>
+            <p class="balance">500.000 đ</p>
+        </div>
+        <div class="payment-methods">
+            <h3>Chọn phương thức thanh toán</h3>
+            <ul>
+                <li><a href="#">Ngân hàng Vietcombank</a></li>
+                <li><a href="#">Ngân hàng Techcombank</a></li>
+                <li><a href="#">Ngân hàng BIDV</a></li>
+                <li><a href="#">Momo</a></li>
+                <li><a href="#">ZaloPay</a></li>
+            </ul>
+        </div>
+        <div class="payment-history">
+            <h3>Lịch sử giao dịch</h3>
+            <ul>
+                <li><a href="#">Xem giao dịch gần đây</a></li>
+            </ul>
+        </div>
+    </div>
+   </div>
+   
+    <script>
+        // Giả sử bạn lấy dữ liệu số dư và phương thức thanh toán từ một API
+let balance = 500000;
+let paymentMethods = [
+    { name: "Vietcombank", link: "#" },
+    { name: "Techcombank", link: "#" },
+    { name: "BIDV", link: "#" },
+    { name: "Momo", link: "#" },
+    { name: "ZaloPay", link: "#" }
+];
+
+// Cập nhật số dư tài khoản
+document.querySelector('.balance').innerText = balance.toLocaleString() + " đ";
+
+// Cập nhật danh sách phương thức thanh toán
+let paymentList = document.querySelector('.payment-methods ul');
+paymentMethods.forEach(method => {
+    let listItem = document.createElement('li');
+    let link = document.createElement('a');
+    link.href = method.link;
+    link.innerText = method.name;
+    listItem.appendChild(link);
+    paymentList.appendChild(listItem);
+});
+
+    </script>
+</body>
+</html>

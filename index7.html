@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* CSS */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #f72b14;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+        }
+
+        .sidebar {
+            background: #f4f4f4;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 60px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            padding: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            background: #ddd;
+            color: #000;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 5px 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Admin Dashboard</h1>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#" onclick="showSection('products')">Duyệt sản phẩm</a></li>
+            <li><a href="#" onclick="showSection('users')">Quản lý người dùng</a></li>
+            <li><a href="#" onclick="showSection('auctions')">Quản lý phiên đấu giá</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <section id="products" class="section">
+            <h2>Duyệt sản phẩm đấu giá</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Người bán</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Điện thoại iPhone</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>Chờ duyệt</td>
+                        <td>
+                            <button onclick="approveProduct(1)">Duyệt</button>
+                            <button onclick="rejectProduct(1)">Từ chối</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="users" class="section">
+            <h2>Quản lý người dùng</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>Người bán</td>
+                        <td>Hoạt động</td>
+                        <td>
+                            <button onclick="suspendUser(1)">Khóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="auctions" class="section">
+            <h2>Quản lý phiên đấu giá</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên phiên</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Phiên đấu giá 01</td>
+                        <td>Ngày bắt đầu: 4:02:40 PM 26/12/2022</td>
+                        <td>Đang diễn ra</td>
+                        <td>
+                            <button onclick="endAuction(1)">Kết thúc</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        // JavaScript
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function approveProduct(productId) {
+            alert(`Duyệt sản phẩm ID: ${productId}`);
+            // Thêm logic để duyệt sản phẩm
+        }
+
+        function rejectProduct(productId) {
+            alert(`Từ chối sản phẩm ID: ${productId}`);
+            // Thêm logic để từ chối sản phẩm
+        }
+
+        function suspendUser(userId) {
+            alert(`Khóa tài khoản ID: ${userId}`);
+            // Thêm logic khóa tài khoản
+        }
+
+        function endAuction(auctionId) {
+            alert(`Kết thúc phiên đấu giá ID: ${auctionId}`);
+            // Thêm logic kết thúc phiên đấu giá
+        }
+    </script>
+</body>
+</html>
